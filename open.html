@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Obsidianで開く</title>
+<style>
+  body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;max-width:480px;margin:48px auto;padding:0 16px;line-height:1.7;color:#1d2330}
+  a.btn{display:inline-block;padding:10px 18px;border-radius:8px;background:#6741d9;color:#fff;text-decoration:none}
+  .note{font-size:13px;color:#666}
+</style>
+</head>
+<body>
+<p>Obsidianを開いています…</p>
+<p><a class="btn" id="go" href="#">開かないときはここをタップ</a></p>
+<p class="note">個人用の中継ページです（メールからObsidianのノートを開くためだけに使います）。</p>
+<script>
+  // 開けるノートは Dashboard と デイリーノート（00_Daily/YYYY-MM-DD）だけに限定する
+  var ALLOWED = /^(Dashboard|00_Daily\/\d{4}-\d{2}-\d{2})$/;
+  var MAC_VAULT_ID = "74ec6e7901a7fa18"; // Macには同名「Documents」の保管庫が2つあるためIDで指定
+  var IOS_VAULT = "Documents";
+  var f = new URLSearchParams(location.search).get("f") || "Dashboard";
+  if (!ALLOWED.test(f)) { f = "Dashboard"; }
+  var ua = navigator.userAgent;
+  var isMobile = /iPhone|iPad|iPod|Android/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var vault = isMobile ? IOS_VAULT : MAC_VAULT_ID;
+  var url = "obsidian://open?vault=" + encodeURIComponent(vault) + "&file=" + encodeURIComponent(f);
+  document.getElementById("go").href = url;
+  location.href = url;
+</script>
+</body>
+</html>
